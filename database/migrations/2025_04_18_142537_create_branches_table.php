@@ -13,12 +13,11 @@ return new class extends Migration
     {
         Schema::create('branches', function (Blueprint $table) {
             $table->id();
-            @table->string('branch_code')->unique();
+            $table->string('branch_code')->unique();
             $table->string('branch_name');
             $table->string('branch_address');
-            $table->timestamps('created_at');
-            $table->timestamps('updated_at');
-            $table->softDeletes('deleted_at');
+            $table->timestamps();
+            $table->softDeletes();
         });
     }
 

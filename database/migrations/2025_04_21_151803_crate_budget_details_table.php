@@ -13,16 +13,11 @@ return new class extends Migration
     {
         Schema::create('budget_details', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('budget_id');
-            $table->unsignedBigInteger('transaction_id');
+            $table->foreignId('budget_id')->constraints()->onDelete('cascade');
+            $table->foreignId('transaction_id')->constraints()->onDelete('cascade');
             $table->decimal('amount');
-            $table->timestamps('created_at');
-            $table->timestamps('updated_at');
-            $table->softDeletes('deleted_at');
-
-            // Foreign key constraints
-            $table->foreign('budget_id')->references('id')->on('budgets')->onDelete('cascade');
-            $table->foreign('transaction_id')->references('id')->on('transactions')->onDelete('cascade');
+            $table->timestamps();
+            $table->softDeletes();
         });
     }
 

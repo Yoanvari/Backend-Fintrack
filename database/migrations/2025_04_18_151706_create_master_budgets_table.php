@@ -13,19 +13,14 @@ return new class extends Migration
     {
         Schema::create('master_budgets', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('branch_id');
-            $table->unsignedBigInteger('user_id');
+            $table->foreignId('branch_id')->constraints()->onDelete('cascade');
+            $table->foreignId('user_id')->constraints()->onDelete('cascade');
             $table->string('name');
             $table->decimal('total_amount');
             $table->date('start_date');
             $table->date('end_date');
-            $table->timestamp('created_at');
-            $table->timestamp('updated_at');
-            $table->softDeletes('deleted_at');
-
-            // Foreign key constraints
-            $table->foreign('branch_id')->references('id')->on('branches')->onDelete('cascade');
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->timestamps();
+            $table->softDeletes();
         });
     }
 

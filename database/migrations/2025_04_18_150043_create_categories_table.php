@@ -15,9 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('category_name');
             $table->enum('category_type', ['income', 'expense']);
-            $table->timestamps('created_at');
-            $table->timestamps('updated_at');
-            $table->softDeletes('deleted_at');
+            $table->timestamps();
+            $table->softDeletes();
         });
     }
 

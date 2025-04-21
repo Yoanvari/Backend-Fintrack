@@ -14,15 +14,11 @@ return new class extends Migration
         Schema::create('pos_transactions', function (Blueprint $table) {
             $table->id();
             $table->string('reservation_id');
-            $table->unsignedBigInteger('branch_id');
+            $table->foreignId('branch_id')->constraints()->onDelete('cascade');
             $table->decimal('total_amount');
             $table->boolean('payment_status')->default(false);
-            $table->timestamp('created_at');
-            $table->timestamp('updated_at');
-            $table->softDeletes('deleted_at');
-
-            // Foreign key constraints
-            $table->foreign('branch_id')->references('id')->on('branches')->onDelete('cascade');
+            $table->timestamps();
+            $table->softDeletes();            
         });
     }
 
