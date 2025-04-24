@@ -11,13 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('budget_details', function (Blueprint $table) {
+        Schema::create('pos_transactions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('budget_id')->constraints()->onDelete('cascade');
-            $table->foreignId('transaction_id')->constraints()->onDelete('cascade');
-            $table->decimal('amount');
+            $table->string('reservation_id');
+            $table->foreignId('branch_id')->constrained()->onDelete('cascade');
+            $table->decimal('total_amount');
+            $table->boolean('payment_status')->default(false);
             $table->timestamps();
-            $table->softDeletes();
+            $table->softDeletes();            
         });
     }
 
@@ -26,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('budget_details');
+        Schema::dropIfExists('pos_transactions');
     }
 };
