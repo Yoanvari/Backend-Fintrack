@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('budgets', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('master_budget_id')->constraints()->onDelete('cascade');
-            $table->foreignId('user_id')->constraints()->onDelete('cascade');
-            $table->foreignId('category_id')->constraints()->onDelete('cascade');
+            $table->foreignId('master_budget_id')->constrained()->onDelete('cascade');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('category_id')->constrained()->onDelete('cascade');
             $table->string('name');
             $table->decimal('amount');
             $table->text('description')->nullable();
