@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\User;
 
 class UserController extends Controller
 {
@@ -15,11 +16,13 @@ class UserController extends Controller
             'branch_id' => 'required|exists:branches,id',
             'name' => 'required|string|max:255',
             'email' => 'required|string|max:255',
-            'password' => 'require|string|max:255',
+            'password' => 'required|string|max:255',
             'role' => 'required|in:super_admin,admin',
         ]);
 
-        $user = User::crate($validated);
+        $validated['password'] = bcrypt($validated['password']);
+
+        $user = User::create($validated);
 
         return response()->json($user, 201);
     }
@@ -33,9 +36,11 @@ class UserController extends Controller
             'branch_id' => 'required|exists:branches,id',
             'name' => 'required|string|max:255',
             'email' => 'required|string|max:255',
-            'password' => 'require|string|max:255',
+            'password' => 'required|string|max:255',
             'role' => 'required|in:super_admin,admin',
         ]);
+
+        $validated['password'] = bcrypt($validated['password']);
 
         $user->update($validated);
 
