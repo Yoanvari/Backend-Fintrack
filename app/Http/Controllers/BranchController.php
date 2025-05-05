@@ -46,7 +46,13 @@ class BranchController extends Controller
         return response()->json($branch, 200);
     }
 
-    public function destroy(Branch $branch) {
+    public function destroy($id) {
+        $branch = Branch::find($id);
+
+        if (!$branch) {
+            return response()->json(['message' => 'Branch not found'], 404);
+        }
+
         $branch->delete();
 
         return response()->json(null, 204);

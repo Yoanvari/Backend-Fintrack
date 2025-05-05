@@ -47,7 +47,13 @@ class PosTransactionController extends Controller
         return response()->json($pos, 200);
     }
 
-    public function destroy(PosTransaction $pos) {
+    public function destroy($id) {
+        $pos = PosTransaction::find($id);
+
+        if (!$pos) {
+            return response()->json(['message' => 'Pos Transaction not found'], 404);
+        }
+
         $pos->delete();
 
         return response()->json(null, 204);

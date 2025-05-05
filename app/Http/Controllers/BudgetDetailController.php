@@ -45,7 +45,13 @@ class BudgetDetailController extends Controller
         return response()->json($detail, 200);
     }
 
-    public function destroy(BudgetDetail $detail) {
+    public function destroy($id) {
+        $detail = BudgetDetail::find($id);
+
+        if (!$detail) {
+            return response()->json(['message' => 'Budget Detail not found'], 404);
+        }
+
         $detail->delete();
 
         return response()->json(null, 204);

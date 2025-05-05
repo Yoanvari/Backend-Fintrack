@@ -51,7 +51,13 @@ class MasterBudgetController extends Controller
         return response()->json($master, 200);
     }
 
-    public function destroy(MasterBudget $master) {
+    public function destroy($id) {
+        $master = MasterBudget::find($id);
+
+        if (!$master) {
+            return response()->json(['message' => 'Master Budget not found'], 404);
+        }
+
         $master->delete();
 
         return response()->json(null, 204);

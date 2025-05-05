@@ -51,7 +51,13 @@ class BudgetController extends Controller
         return response()->json($budget, 200);
     }
 
-    public function destroy(Budget $budget) {
+    public function destroy($id) {
+        $budget = Budget::find($id);
+
+        if (!$budget) {
+            return response()->json(['message' => 'Budget not found'], 404);
+        }
+
         $budget->delete();
 
         return response()->json(null, 204);
