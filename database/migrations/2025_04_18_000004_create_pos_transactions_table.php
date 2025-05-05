@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('reservation_id');
             $table->foreignId('branch_id')->constrained()->onDelete('cascade');
-            $table->decimal('total_amount');
+            $table->decimal('total_amount', 12, 2);
             $table->boolean('payment_status')->default(false);
             $table->timestamps();
             $table->softDeletes();            
