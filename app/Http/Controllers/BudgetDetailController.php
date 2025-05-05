@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\BudgetDetail;
 
 class BudgetDetailController extends Controller
 {
@@ -22,7 +23,13 @@ class BudgetDetailController extends Controller
         return response()->json($detail, 201);
     }
 
-    public function show(BudgetDetail $detail) {
+    public function show($id) {
+        $detail = BudgetDetail::find($id);
+
+        if (!$detail) {
+            return response()->json(['message' => 'Budget Detail not found'], 404);
+        }
+
         return response()->json($detail, 200);
     }
 

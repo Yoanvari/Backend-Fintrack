@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\MasterBudget;
 
 class MasterBudgetController extends Controller
 {
@@ -25,7 +26,13 @@ class MasterBudgetController extends Controller
         return response()->json($master, 201);
     }
 
-    public function show(MasterBudget $master) {
+    public function show($id) {
+        $master = MasterBudget::find($id);
+
+        if (!$master) {
+            return response()->json(['message' => 'Master Budget not found'], 404);
+        }
+
         return response()->json($master, 200);
     }
 

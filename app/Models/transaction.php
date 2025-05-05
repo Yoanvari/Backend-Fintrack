@@ -19,6 +19,8 @@ class Transaction extends Model
         'transaction_date',
     ];
 
+    protected $primaryKey = 'id';
+
     public function user()
     {
         return $this->belongsTo(User::class);

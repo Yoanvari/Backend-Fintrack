@@ -18,6 +18,8 @@ class Budget extends Model
         'description',
     ];
 
+    protected $primaryKey = 'id';
+
     public function masterBudget() {
         return $this->belongsTo(MasterBudget::class);
     }

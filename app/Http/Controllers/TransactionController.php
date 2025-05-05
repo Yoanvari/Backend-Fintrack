@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Transaction;
 
 class TransactionController extends Controller
 {
@@ -25,7 +26,13 @@ class TransactionController extends Controller
         return response()->json($transaction, 201);
     }
 
-    public function show(Transaction $transaction) {
+    public function show($id) {
+        $transaction = Transaction::find($id);
+
+        if (!$transaction) {
+            return response()->json(['message' => 'Transaction not found'], 404);
+        }
+
         return response()->json($transaction, 200);
     }
 

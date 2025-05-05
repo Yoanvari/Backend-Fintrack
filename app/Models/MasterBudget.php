@@ -18,6 +18,8 @@ class MasterBudget extends Model
         'end_date',
     ];
 
+    protected $primaryKey = 'id';
+
     public function branch() {
         return $this->belongsTo(Branch::class);
     }

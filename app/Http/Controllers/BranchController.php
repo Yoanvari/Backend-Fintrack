@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Branch;
 
 class BranchController extends Controller
 {
@@ -23,7 +24,13 @@ class BranchController extends Controller
         return response()->json($branch, 201);
     }
 
-    public function show(Branch $branch) {
+    public function show($id) {
+        $branch = Branch::find($id);
+
+        if (!$branch) {
+            return response()->json(['message' => 'Branch not found'], 404);
+        }
+
         return response()->json($branch, 200);
     }
 

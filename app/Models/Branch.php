@@ -14,4 +14,6 @@ class Branch extends Model
         'branch_name',
         'branch_address',
     ];
+
+    protected $primaryKey = 'id';
 }

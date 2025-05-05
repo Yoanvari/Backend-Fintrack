@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Category;
 
 class CategoryController extends Controller
 {
@@ -21,7 +22,13 @@ class CategoryController extends Controller
         return response()->json($category, 201);
     }
 
-    public function show(Category $category) {
+    public function show($id) {
+        $category = Category::find($id);
+
+        if (!$category) {
+            return response()->json(['message' => 'Category not found'], 404);
+        }
+
         return response()->json($category, 200);
     }
 

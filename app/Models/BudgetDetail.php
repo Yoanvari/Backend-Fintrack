@@ -15,6 +15,8 @@ class BudgetDetail extends Model
         'amount',
     ];
 
+    protected $primaryKey = 'id';
+
     public function budget() {
         return $this->belongsTo(budget::class);
     }

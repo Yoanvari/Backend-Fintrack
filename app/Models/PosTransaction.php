@@ -16,6 +16,8 @@ class PosTransaction extends Model
         'payment_status',
     ];
 
+    protected $primaryKey = 'id';
+
     public function branch() {
         return $this->belongsTo(Branch::class);
     }

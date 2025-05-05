@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\PosTransaction;
 
 class PosTransactionController extends Controller
 {
@@ -23,7 +24,13 @@ class PosTransactionController extends Controller
         return response()->json($pos, 201);
     }
 
-    public function show(PosTransaction $pos) {
+    public function show($id) {
+        $pos = PosTransaction::find($id);
+
+        if (!$pos) {
+            return response()->json(['message' => 'POS Transaction not found'], 404);
+        }
+
         return response()->json($pos, 200);
     }
 
