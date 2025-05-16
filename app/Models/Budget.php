@@ -9,7 +9,7 @@ class Budget extends Model
 {
     use HasFactory;
 
-    protected $fillabel = [
+    protected $fillable = [
         'master_budget_id',
         'user_id',
         'category_id',
