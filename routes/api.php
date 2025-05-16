@@ -10,7 +10,8 @@ use App\Http\Controllers\PosTransactionController;
 use App\Http\Controllers\MasterBudgetController;
 use App\Http\Controllers\BudgetController;
 use App\Http\Controllers\BudgetDetailController;
-
+use App\Http\Controllers\DashboardAdminController;
+use App\Http\Controllers\DashboardSuperAdminController;
 use Illuminate\Http\Request;
 
 Route::post('/login', [AuthController::class, 'login']);
@@ -68,3 +69,12 @@ Route::post('/tokens/create', function (Request $request) {
  
     return ['token' => $token->plainTextToken];
 });
+
+Route::get('/dashboard-summary', [DashboardAdminController::class, 'summary']);
+Route::get('/dashboard-trendchart', [DashboardAdminController::class, 'trendChart']);
+Route::get('/dashboard-trendchart-yearly', [DashboardAdminController::class, 'trendChartYearly']);
+Route::get('/dashboard-transactions', [DashboardAdminController::class, 'recentTransactions']);
+
+Route::get('/superadmin/dashboard-summary', [DashboardSuperAdminController::class, 'summary']);
+Route::get('/superadmin/dashboard-trendline', [DashboardSuperAdminController::class, 'trendLine']);
+Route::get('/superadmin/dashboard-trendbar', [DashboardSuperAdminController::class, 'trendBar']);

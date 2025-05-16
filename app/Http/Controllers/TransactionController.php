@@ -18,7 +18,7 @@ class TransactionController extends Controller
             'category_id' => 'required|exists:categories,id',
             'amount' => 'required|numeric|min:0',
             'description' => 'nullable|string',
-            'transaction_date' => 'require|date',
+            'transaction_date' => 'required|date',
         ]);
 
         $transaction = Transaction::create($validated);
