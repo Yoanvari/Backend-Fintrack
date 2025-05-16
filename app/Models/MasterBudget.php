@@ -20,7 +20,13 @@ class MasterBudget extends Model
 
     protected $primaryKey = 'id';
 
+    // Relasi ke Branch
     public function branch() {
         return $this->belongsTo(Branch::class);
+    }
+
+    // Tambahkan relasi ke User agar lebih lengkap
+    public function user() {
+        return $this->belongsTo(User::class);
     }
 }
