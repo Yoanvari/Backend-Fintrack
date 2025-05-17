@@ -17,18 +17,18 @@ class CategorySeeder extends Seeder
 
         // Seed Categories (Kategori khusus sport center)
         $incomeCategories = [
-            ['category_name' => 'Membership', 'category_type' => 'income'],
-            ['category_name' => 'Kelas Fitness', 'category_type' => 'income'],
-            ['category_name' => 'Sewa Lapangan', 'category_type' => 'income'],
-            ['category_name' => 'Penjualan Merchandise', 'category_type' => 'income']
+            ['category_name' => 'Membership', 'category_type' => 'pemasukan'],
+            ['category_name' => 'Kelas Fitness', 'category_type' => 'pemasukan'],
+            ['category_name' => 'Sewa Lapangan', 'category_type' => 'pemasukan'],
+            ['category_name' => 'Penjualan Merchandise', 'category_type' => 'pemasukan']
         ];
 
         $expenseCategories = [
-            ['category_name' => 'Gaji Staff', 'category_type' => 'expense'],
-            ['category_name' => 'Gaji Instruktur', 'category_type' => 'expense'],
-            ['category_name' => 'Pemeliharaan Peralatan', 'category_type' => 'expense'],
-            ['category_name' => 'Listrik dan Air', 'category_type' => 'expense'],
-            ['category_name' => 'Promosi', 'category_type' => 'expense']
+            ['category_name' => 'Gaji Staff', 'category_type' => 'pengeluaran'],
+            ['category_name' => 'Gaji Instruktur', 'category_type' => 'pengeluaran'],
+            ['category_name' => 'Pemeliharaan Peralatan', 'category_type' => 'pengeluaran'],
+            ['category_name' => 'Listrik dan Air', 'category_type' => 'pengeluaran'],
+            ['category_name' => 'Promosi', 'category_type' => 'pengeluaran']
         ];
 
         Category::insert($incomeCategories);
