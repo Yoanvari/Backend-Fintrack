@@ -17,6 +17,7 @@ class Transaction extends Model
         'amount',
         'description',
         'transaction_date',
+        'is_locked',
     ];
 
     protected $primaryKey = 'id';
