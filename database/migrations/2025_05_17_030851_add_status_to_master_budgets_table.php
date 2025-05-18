@@ -10,7 +10,7 @@ class AddStatusToMasterBudgetsTable extends Migration
     {
         Schema::table('master_budgets', function (Blueprint $table) {
             $table->string('status')->default('draft')->after('description');
-            // Kamu bisa atur default sesuai kebutuhan, misal 'draft', 'pending', dll
+            
         });
     }
 

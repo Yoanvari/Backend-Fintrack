@@ -6,9 +6,8 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
+
+
     public function up()
 {
     Schema::table('master_budgets', function (Blueprint $table) {
