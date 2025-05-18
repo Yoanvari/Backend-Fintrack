@@ -24,10 +24,18 @@ class AuthController extends Controller
             return response()->json(['message' => 'Password incorrect'], 401);
         }
 
+        $token = $user->createToken('API Token')->plainTextToken;
+
         return response()->json([
             'message' => 'Login successful',
             'user' => $user,
-            // 'token' => $token
+            'token' => $token
         ]);
+    }
+
+    public function logout(Request $request) {
+        $request->user()->currentAccessToken()->delete();
+
+        return response()->json(['message' => 'Logout sukses']);
     }
 }
