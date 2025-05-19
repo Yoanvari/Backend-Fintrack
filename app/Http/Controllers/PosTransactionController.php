@@ -13,7 +13,7 @@ class PosTransactionController extends Controller
 
     public function store(Request $request) {
         $validated = $request->validate([
-            'reservation_id' => 'require|string|max:255',
+            'reservation_id' => 'required|string|max:255',
             'branch_id' => 'required|exists:branches,id',
             'total_amount' => 'required|numeric|min:0',
             'payment_status' => 'required|boolean',

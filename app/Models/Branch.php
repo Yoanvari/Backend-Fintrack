@@ -16,4 +16,9 @@ class Branch extends Model
     ];
 
     protected $primaryKey = 'id';
+    
+    public function transactions()
+    {
+        return $this->hasMany(Transaction::class);
+    }
 }
