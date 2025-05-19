@@ -19,6 +19,7 @@ return new class extends Migration
             $table->decimal('amount', 12, 2);
             $table->text('description')->nullable();
             $table->date('transaction_date');
+            $table->boolean('is_locked')->default(false);
             $table->timestamps();
             $table->softDeletes();            
         });

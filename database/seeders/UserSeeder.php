@@ -27,28 +27,17 @@ class UserSeeder extends Seeder
             'email_verified_at' => now(),
         ]);
 
-        // Branch Managers
         $branches = Branch::all();
         foreach ($branches as $branch) {
-            User::create([
-                'branch_id' => $branch->id,
-                'name' => 'Manager ' . $branch->branch_name,
-                'email' => strtolower(str_replace(' ', '', 'manager_'.$branch->branch_name)).'@sportcenter.com',
-                'password' => Hash::make('password123'),
-                'role' => 'admin',
-                'email_verified_at' => now(),
-            ]);
-        }
-
-        // Staff (5 staff per branch)
-        $staffRoles = ['Front Office', 'Fitness Trainer', 'Customer Service', 'Finance Staff', 'Maintenance'];
-        
-        foreach ($branches as $branch) {
-            foreach ($staffRoles as $role) {
+            for ($i = 1; $i <= 5; $i++) {
+                $firstName = $faker->firstName;
+                $lastName = $faker->lastName;
+                $fullName = $firstName . ' ' . $lastName;
+                
                 User::create([
                     'branch_id' => $branch->id,
-                    'name' => $role . ' ' . $branch->branch_name,
-                    'email' => strtolower(str_replace(' ', '', $role.'_'.$branch->branch_name)).'@sportcenter.com',
+                    'name' => $fullName,
+                    'email' => strtolower($firstName . $i . '@sportcenter.com'),
                     'password' => Hash::make('password123'),
                     'role' => 'admin',
                     'email_verified_at' => now(),
