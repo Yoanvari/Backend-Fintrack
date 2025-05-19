@@ -14,6 +14,18 @@ use App\Http\Controllers\DashboardAdminController;
 use App\Http\Controllers\DashboardSuperAdminController;
 use Illuminate\Http\Request;
 
+Route::middleware('auth:sanctum')->post('/tokens/create', function (Request $request) {
+    $request->validate([
+        'token_name' => 'required|string|max:255',
+    ]);
+
+    $token = $request->user()->createToken($request->token_name);
+
+    return ['token' => $token->plainTextToken];
+});
+
+Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);
+
 Route::post('/login', [AuthController::class, 'login']);
 
 Route::get('/branch', [BranchController::class, 'index']);

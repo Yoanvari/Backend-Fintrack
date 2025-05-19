@@ -16,8 +16,8 @@ class TransactionSeeder extends Seeder
     {
         $faker = Faker::create('id_ID');
         $users = User::all();
-        $incomeCategories = Category::where('category_type', 'income')->get();
-        $expenseCategories = Category::where('category_type', 'expense')->get();
+        $incomeCategories = Category::where('category_type', 'pemasukan')->get();
+        $expenseCategories = Category::where('category_type', 'pengeluaran')->get();
 
         // Income Transactions
         for ($i = 0; $i < 50; $i++) {
