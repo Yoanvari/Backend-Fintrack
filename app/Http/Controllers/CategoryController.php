@@ -32,7 +32,13 @@ class CategoryController extends Controller
         return response()->json($category, 200);
     }
 
-    public function update(Request $request, Category $category) {
+    public function update(Request $request, $id) {
+        $category = Category::find($id);
+
+        if (!$category) {
+            return response()->json(['message' => 'Category not found'], 404);
+        }
+
         $validated = $request->validate([
             'category_name' => 'required|string|max:32',
             'category_type' => 'required|string|max:16',
