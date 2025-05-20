@@ -26,6 +26,11 @@ class User extends Authenticatable
         'role',
     ];
 
+    public function branch()
+    {
+        return $this->belongsTo(Branch::class);
+    }
+
     protected $primaryKey = 'id';
 
     /**

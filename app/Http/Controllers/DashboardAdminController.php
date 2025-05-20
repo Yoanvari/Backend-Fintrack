@@ -12,13 +12,13 @@ class DashboardAdminController extends Controller
     {
         $pemasukan = Transaction::with('category')
             ->whereHas('category', function ($query) {
-                $query->where('category_type', 'income');
+                $query->where('category_type', 'pemasukan');
             })
             ->sum('amount');
 
         $pengeluaran = Transaction::with('category')
             ->whereHas('category', function ($query) {
-                $query->where('category_type', 'expense');
+                $query->where('category_type', 'pengeluaran');
             })
             ->sum('amount');
 
@@ -35,8 +35,8 @@ class DashboardAdminController extends Controller
         // Ambil data transaksi grouped by bulan dan category_type
         $data = Transaction::with('category')
             ->selectRaw('MONTH(transaction_date) as month')
-            ->selectRaw('SUM(CASE WHEN category_type = "income" THEN amount ELSE 0 END) as pemasukan')
-            ->selectRaw('SUM(CASE WHEN category_type = "expense" THEN amount ELSE 0 END) as pengeluaran')
+            ->selectRaw('SUM(CASE WHEN category_type = "pemasukan" THEN amount ELSE 0 END) as pemasukan')
+            ->selectRaw('SUM(CASE WHEN category_type = "pengeluaran" THEN amount ELSE 0 END) as pengeluaran')
             ->join('categories', 'transactions.category_id', '=', 'categories.id')
             ->groupBy('month')
             ->orderBy('month')
@@ -67,8 +67,8 @@ class DashboardAdminController extends Controller
     {
         $data = Transaction::with('category')
             ->selectRaw('YEAR(transaction_date) as year')
-                ->selectRaw("SUM(CASE WHEN categories.category_type = 'income' THEN amount ELSE 0 END) as total_income")
-                ->selectRaw("SUM(CASE WHEN categories.category_type = 'expense' THEN amount ELSE 0 END) as total_expense")
+                ->selectRaw("SUM(CASE WHEN categories.category_type = 'pemasukan' THEN amount ELSE 0 END) as total_income")
+                ->selectRaw("SUM(CASE WHEN categories.category_type = 'penngeluaran' THEN amount ELSE 0 END) as total_expense")
             ->join('categories', 'transactions.category_id', '=', 'categories.id')
             ->groupBy('year')
             ->orderBy('year')
