@@ -16,11 +16,11 @@ class DashboardSuperAdminController extends Controller
         // Hitung pemasukan, pengeluaran, dan saldo untuk tiap cabang
         $result = $branches->map(function ($branch) {
             $pemasukan = $branch->transactions
-                ->filter(fn($t) => $t->category?->category_type === 'income')
+                ->filter(fn($t) => $t->category?->category_type === 'pemasukan')
                 ->sum('amount');
 
             $pengeluaran = $branch->transactions
-                ->filter(fn($t) => $t->category?->category_type === 'expense')
+                ->filter(fn($t) => $t->category?->category_type === 'pengeluaran')
                 ->sum('amount');
 
             return [
@@ -46,7 +46,7 @@ class DashboardSuperAdminController extends Controller
         // Ambil total pemasukan per tahun
         $income = Transaction::selectRaw("YEAR(transaction_date) as year")
             ->selectRaw("SUM(amount) as total")
-            ->whereHas('category', fn($q) => $q->where('category_type', 'income'))
+            ->whereHas('category', fn($q) => $q->where('category_type', 'pemasukan'))
             ->groupBy('year')
             ->orderBy('year')
             ->get()
@@ -55,7 +55,7 @@ class DashboardSuperAdminController extends Controller
         // Ambil total pengeluaran per tahun
         $expense = Transaction::selectRaw("YEAR(transaction_date) as year")
             ->selectRaw("SUM(amount) as total")
-            ->whereHas('category', fn($q) => $q->where('category_type', 'expense'))
+            ->whereHas('category', fn($q) => $q->where('category_type', 'pengeluaran'))
             ->groupBy('year')
             ->orderBy('year')
             ->get()
@@ -95,7 +95,7 @@ class DashboardSuperAdminController extends Controller
         // Ambil pemasukan bulanan
         $income = Transaction::selectRaw("DATE_FORMAT(transaction_date, '%b') as month")
             ->selectRaw("SUM(amount) as total")
-            ->whereHas('category', fn($q) => $q->where('category_type', 'income'))
+            ->whereHas('category', fn($q) => $q->where('category_type', 'pemasukan'))
             ->groupBy('month')
             ->get()
             ->pluck('total', 'month')
@@ -104,7 +104,7 @@ class DashboardSuperAdminController extends Controller
         // Ambil pengeluaran bulanan
         $expense = Transaction::selectRaw("DATE_FORMAT(transaction_date, '%b') as month")
             ->selectRaw("SUM(amount) as total")
-            ->whereHas('category', fn($q) => $q->where('category_type', 'expense'))
+            ->whereHas('category', fn($q) => $q->where('category_type', 'pengeluaran'))
             ->groupBy('month')
             ->get()
             ->pluck('total', 'month')
