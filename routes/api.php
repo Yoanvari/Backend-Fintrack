@@ -32,11 +32,13 @@ Route::middleware('auth:sanctum')->post('/branch', [BranchController::class, 'st
 Route::middleware('auth:sanctum')->put('/branch/{id}', [BranchController::class, 'update']);
 Route::middleware('auth:sanctum')->delete('/branch/{id}', [BranchController::class, 'destroy']);
 
-Route::middleware('auth:sanctum')->get('/category', [CategoryController::class, 'index']);
-Route::middleware('auth:sanctum')->get('/category/{id}', [CategoryController::class, 'show']);
-Route::middleware('auth:sanctum')->post('/category', [CategoryController::class, 'store']);
-Route::middleware('auth:sanctum')->put('/category/{id}', [CategoryController::class, 'update']);
-Route::middleware('auth:sanctum')->delete('/category/{id}', [CategoryController::class, 'destroy']);
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::get('/category', [CategoryController::class, 'index']);
+    Route::get('/category/{id}', [CategoryController::class, 'show']);
+    Route::post('/category', [CategoryController::class, 'store']);
+    Route::put('/category/{id}', [CategoryController::class, 'update']);
+    Route::delete('/category/{id}', [CategoryController::class, 'destroy']);
+});
 
 Route::middleware('auth:sanctum')->get('/user', [UserController::class, 'index']);
 Route::middleware('auth:sanctum')->get('/user/{id}', [UserController::class, 'show']);
@@ -46,9 +48,11 @@ Route::middleware('auth:sanctum')->delete('/user/{id}', [UserController::class, 
 
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/transaction', [TransactionController::class, 'index']);
+    Route::get('/transaction-detail', [TransactionController::class, 'showDetail']);
     Route::get('/transaction/{id}', [TransactionController::class, 'show']);
     Route::post('/transaction', [TransactionController::class, 'store']);
-    Route::put('/transaction/{id}', [TransactionController::class, 'update']);
+    Route::patch('/transaction/{id}', [TransactionController::class, 'update']);
+    Route::patch('/transaction-lock/{id}', [TransactionController::class, 'lock']);
     Route::delete('/transaction/{id}', [TransactionController::class, 'destroy']);
 });
 
