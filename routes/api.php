@@ -23,8 +23,8 @@ Route::middleware('auth:sanctum')->post('/tokens/create', function (Request $req
 
     return ['token' => $token->plainTextToken];
 });
-Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);
 Route::post('/login', [AuthController::class, 'login']);
+Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);
 
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/branch', [BranchController::class, 'index']);
