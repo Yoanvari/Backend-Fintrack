@@ -10,18 +10,28 @@ class DashboardSuperAdminController extends Controller
 {
     public function summary()
     {
-        // Ambil semua cabang dan relasi transaksi + kategori
+        // Ambil semua cabang beserta transaksi dan kategorinya
         $branches = Branch::with(['transactions.category'])->get();
 
-        // Hitung pemasukan, pengeluaran, dan saldo untuk tiap cabang
-        $result = $branches->map(function ($branch) {
+        // Hitung total pemasukan, pengeluaran, dan saldo keseluruhan
+        $totalPemasukan = 0;
+        $totalPengeluaran = 0;
+
+        // Proses data tiap cabang
+        $branchData = $branches->map(function ($branch) use (&$totalPemasukan, &$totalPengeluaran) {
             $pemasukan = $branch->transactions
-                ->filter(fn($t) => $t->category?->category_type === 'pemasukan')
+                ->where('category.category_type', 'pemasukan')
                 ->sum('amount');
 
             $pengeluaran = $branch->transactions
-                ->filter(fn($t) => $t->category?->category_type === 'pengeluaran')
+                ->where('category.category_type', 'pengeluaran')
                 ->sum('amount');
+
+            $saldo = $pemasukan - $pengeluaran;
+
+            // Akumulasi total
+            $totalPemasukan += $pemasukan;
+            $totalPengeluaran += $pengeluaran;
 
             return [
                 'branch_code' => $branch->branch_code,
@@ -29,16 +39,18 @@ class DashboardSuperAdminController extends Controller
                 'branch_address' => $branch->branch_address,
                 'pemasukan' => $pemasukan,
                 'pengeluaran' => $pengeluaran,
-                'saldo' => $pemasukan - $pengeluaran,
+                'saldo' => $saldo,
             ];
         });
 
-        // Hitung jumlah cabang
-        $jumlah_cabang = $branches->count();
-
         return response()->json([
-            'jumlah_cabang' => $jumlah_cabang,
-            'branches' => $result,
+            'summary' => [
+                'total_pemasukan' => $totalPemasukan,
+                'total_pengeluaran' => $totalPengeluaran,
+                'total_saldo' => $totalPemasukan - $totalPengeluaran,
+                'jumlah_cabang' => $branches->count(),
+            ],
+            'branches' => $branchData,
         ]);
     }
     public function trendLine()

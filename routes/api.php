@@ -28,11 +28,11 @@ Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logo
 
 Route::post('/login', [AuthController::class, 'login']);
 
-Route::get('/branch', [BranchController::class, 'index']);
-Route::get('/branch/{id}', [BranchController::class, 'show']);
-Route::post('/branch', [BranchController::class, 'store']);
-Route::put('/branch/{id}', [BranchController::class, 'update']);
-Route::delete('/branch/{id}', [BranchController::class, 'destroy']);
+Route::get('/superadmin/branch', [BranchController::class, 'index']);
+Route::get('/superadmin/branch/{id}', [BranchController::class, 'show']);
+Route::post('/superadmin/branch', [BranchController::class, 'store']);
+Route::put('/superadmin/branch/{id}', [BranchController::class, 'update']);
+Route::delete('/superadmin/branch/{id}', [BranchController::class, 'destroy']);
 
 Route::get('/category', [CategoryController::class, 'index']);
 Route::get('/category/{id}', [CategoryController::class, 'show']);
@@ -40,11 +40,11 @@ Route::post('/category', [CategoryController::class, 'store']);
 Route::put('/category/{id}', [CategoryController::class, 'update']);
 Route::delete('/category/{id}', [CategoryController::class, 'destroy']);
 
-Route::get('/user', [UserController::class, 'index']);
-Route::get('/user/{id}', [UserController::class, 'show']);
-Route::post('/user', [UserController::class, 'store']);
-Route::put('/user/{id}', [UserController::class, 'update']);
-Route::delete('/user/{id}', [UserController::class, 'destroy']);
+Route::get('superadmin/user', [UserController::class, 'index']);
+Route::get('superadmin/user/{id}', [UserController::class, 'show']);
+Route::post('/superadmin/user', [UserController::class, 'store']);
+Route::put('superadmin/user/{id}', [UserController::class, 'update']);
+Route::delete('superadmin/user/{id}', [UserController::class, 'destroy']);
 Route::get('/superadmin/get-admins',[UserController::class,'getAdmins']);
 
 Route::get('/transaction', [TransactionController::class, 'index']);
