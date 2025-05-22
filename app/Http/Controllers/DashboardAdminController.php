@@ -4,19 +4,24 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Transaction;
+use Carbon\Carbon;
 
 class DashboardAdminController extends Controller
 {
     //
     public function summary()
     {
+        $currentYear = Carbon::now()->year;
+
         $pemasukan = Transaction::with('category')
+            ->whereYear('created_at', $currentYear)
             ->whereHas('category', function ($query) {
                 $query->where('category_type', 'pemasukan');
             })
             ->sum('amount');
 
         $pengeluaran = Transaction::with('category')
+            ->whereYear('created_at', $currentYear)
             ->whereHas('category', function ($query) {
                 $query->where('category_type', 'pengeluaran');
             })
