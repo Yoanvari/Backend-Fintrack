@@ -22,6 +22,10 @@ class Transaction extends Model
 
     protected $primaryKey = 'id';
 
+    protected $casts = [
+        'transaction_date' => 'datetime',
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class);
