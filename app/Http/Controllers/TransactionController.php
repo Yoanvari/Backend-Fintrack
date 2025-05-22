@@ -32,6 +32,24 @@ class TransactionController extends Controller
             ]);
     }
 
+    public function showByBranch($branchId) {
+        $transaction = Transaction::with(['user', 'branch', 'category'])
+                        ->where('branch_id', $branchId)
+                        ->orderBy('transaction_date', 'desc')
+                        ->get();
+
+        $todayCount = Transaction::whereDate('transaction_date', Carbon::now('Asia/Jakarta')->toDateString())->count();
+        $lockedCount = Transaction::where('is_locked', true)->count();
+        return (new TransactionCollection($transaction))
+            ->additional([
+                'meta' => [
+                    'total' => $transaction->count(),
+                    'today_count' => $todayCount,
+                    'locked_count' => $lockedCount,
+                ],
+            ]);
+    }
+
     public function store(Request $request) {
         $validated = $request->validate([
             'user_id' => 'required|exists:users,id',
@@ -89,7 +107,9 @@ class TransactionController extends Controller
         $transaction = Transaction::findOrFail($id);
       
         if ($transaction->is_locked) {
-          return response()->json(['message' => 'Transaksi sudah terkunci'], 400);
+            $transaction->is_locked = false;
+            $transaction->save();
+            return response()->json(['message' => 'Transaksi berhasil dibuka', 'data' => $transaction]);
         }
       
         $transaction->is_locked = true;

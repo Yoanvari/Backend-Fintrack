@@ -49,6 +49,7 @@ Route::middleware('auth:sanctum')->delete('/user/{id}', [UserController::class, 
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/transaction', [TransactionController::class, 'index']);
     Route::get('/transaction-detail', [TransactionController::class, 'showDetail']);
+    Route::get('/transaction-branch/{id}', [TransactionController::class, 'showByBranch']);
     Route::get('/transaction/{id}', [TransactionController::class, 'show']);
     Route::post('/transaction', [TransactionController::class, 'store']);
     Route::patch('/transaction/{id}', [TransactionController::class, 'update']);
