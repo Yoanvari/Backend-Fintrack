@@ -41,26 +41,33 @@ class UserController extends Controller
         return response()->json($user, 200);
     }
 
-    public function update(Request $request, User $user)
+    public function update(Request $request, $id)
     {
+        // Cari user berdasarkan ID
+        $user = User::findOrFail($id);
+
+        // Validasi data
         $validated = $request->validate([
             'branch_id' => 'required|exists:branches,id',
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|unique:users,email,' . $user->id,
+            'email' => 'required|string|email|unique:users,email,' . $id,
             'password' => 'nullable|string|min:6',
-            'role' => 'required|in:super_admin,admin',
+            'role' => 'required|in:super_admin,admin,staff',
         ]);
 
+        // Jika ada password, hash. Kalau tidak, hapus dari array validasi.
         if ($request->filled('password')) {
             $validated['password'] = bcrypt($validated['password']);
         } else {
             unset($validated['password']);
         }
 
+        // Update user
         $user->update($validated);
 
         return response()->json($user, 200);
     }
+
 
     public function destroy($id)
     {

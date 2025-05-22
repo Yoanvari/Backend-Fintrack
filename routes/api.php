@@ -25,7 +25,6 @@ Route::middleware('auth:sanctum')->post('/tokens/create', function (Request $req
 });
 Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);
 Route::post('/login', [AuthController::class, 'login']);
-
 Route::middleware('auth:sanctum')->get('/branch', [BranchController::class, 'index']);
 Route::middleware('auth:sanctum')->get('/branch/{id}', [BranchController::class, 'show']);
 Route::middleware('auth:sanctum')->post('/branch', [BranchController::class, 'store']);
