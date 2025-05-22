@@ -9,11 +9,12 @@ use Carbon\Carbon;
 class DashboardAdminController extends Controller
 {
     //
-    public function summary()
+    public function summary($branchId)
     {
         $currentYear = Carbon::now()->year;
 
         $pemasukan = Transaction::with('category')
+            ->where('branch_id', $branchId)
             ->whereYear('created_at', $currentYear)
             ->whereHas('category', function ($query) {
                 $query->where('category_type', 'pemasukan');
@@ -21,6 +22,7 @@ class DashboardAdminController extends Controller
             ->sum('amount');
 
         $pengeluaran = Transaction::with('category')
+            ->where('branch_id', $branchId)
             ->whereYear('created_at', $currentYear)
             ->whereHas('category', function ($query) {
                 $query->where('category_type', 'pengeluaran');
@@ -35,10 +37,12 @@ class DashboardAdminController extends Controller
             'saldo' => $saldo,
         ]);
     }
-    public function trendChart()
+    
+    public function trendChart($branchId)
     {
         // Ambil data transaksi grouped by bulan dan category_type
         $data = Transaction::with('category')
+            ->where('branch_id', $branchId)
             ->selectRaw('MONTH(transaction_date) as month')
             ->selectRaw('SUM(CASE WHEN category_type = "pemasukan" THEN amount ELSE 0 END) as pemasukan')
             ->selectRaw('SUM(CASE WHEN category_type = "pengeluaran" THEN amount ELSE 0 END) as pengeluaran')
@@ -68,9 +72,11 @@ class DashboardAdminController extends Controller
             ],
         ]);
     }
-    public function trendChartYearly()
+
+    public function trendChartYearly($branchId)
     {
         $data = Transaction::with('category')
+            ->where('branch_id', $branchId)
             ->selectRaw('YEAR(transaction_date) as year')
                 ->selectRaw("SUM(CASE WHEN categories.category_type = 'pemasukan' THEN amount ELSE 0 END) as total_income")
                 ->selectRaw("SUM(CASE WHEN categories.category_type = 'penngeluaran' THEN amount ELSE 0 END) as total_expense")
@@ -88,9 +94,11 @@ class DashboardAdminController extends Controller
 
         return response()->json($result);
     }
-    public function recentTransactions()
+
+    public function recentTransactions($branchId)
     {
         $transactions = Transaction::with('category')
+            ->where('branch_id', $branchId)
             ->orderByDesc('transaction_date')
             ->take(10)
             ->get()

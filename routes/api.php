@@ -95,10 +95,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
 });
 
 Route::middleware(['auth:sanctum'])->group(function () {
-    Route::get('/dashboard-summary', [DashboardAdminController::class, 'summary']);
-    Route::get('/dashboard-trendchart', [DashboardAdminController::class, 'trendChart']);
-    Route::get('/dashboard-trendchart-yearly', [DashboardAdminController::class, 'trendChartYearly']);
-    Route::get('/dashboard-transactions', [DashboardAdminController::class, 'recentTransactions']);
+    Route::get('/dashboard-summary/{id}', [DashboardAdminController::class, 'summary']);
+    Route::get('/dashboard-trendchart/{id}', [DashboardAdminController::class, 'trendChart']);
+    Route::get('/dashboard-trendchart-yearly/{id}', [DashboardAdminController::class, 'trendChartYearly']);
+    Route::get('/dashboard-transactions/{id}', [DashboardAdminController::class, 'recentTransactions']);
 });
 
 Route::middleware(['auth:sanctum'])->group(function () {
