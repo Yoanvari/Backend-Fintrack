@@ -25,11 +25,14 @@ Route::middleware('auth:sanctum')->post('/tokens/create', function (Request $req
 });
 Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);
 Route::post('/login', [AuthController::class, 'login']);
-Route::middleware('auth:sanctum')->get('/branch', [BranchController::class, 'index']);
-Route::middleware('auth:sanctum')->get('/branch/{id}', [BranchController::class, 'show']);
-Route::middleware('auth:sanctum')->post('/branch', [BranchController::class, 'store']);
-Route::middleware('auth:sanctum')->put('/branch/{id}', [BranchController::class, 'update']);
-Route::middleware('auth:sanctum')->delete('/branch/{id}', [BranchController::class, 'destroy']);
+
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::get('/branch', [BranchController::class, 'index']);
+    Route::get('/branch/{id}', [BranchController::class, 'show']);
+    Route::post('/branch', [BranchController::class, 'store']);
+    Route::put('/branch/{id}', [BranchController::class, 'update']);
+    Route::delete('/branch/{id}', [BranchController::class, 'destroy']);
+});
 
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/category', [CategoryController::class, 'index']);
@@ -39,11 +42,14 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::delete('/category/{id}', [CategoryController::class, 'destroy']);
 });
 
-Route::middleware('auth:sanctum')->get('/user', [UserController::class, 'index']);
-Route::middleware('auth:sanctum')->get('/user/{id}', [UserController::class, 'show']);
-Route::middleware('auth:sanctum')->post('/user', [UserController::class, 'store']);
-Route::middleware('auth:sanctum')->put('/user/{id}', [UserController::class, 'update']);
-Route::middleware('auth:sanctum')->delete('/user/{id}', [UserController::class, 'destroy']);
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::get('/user', [UserController::class, 'index']);
+    Route::get('/user/{id}', [UserController::class, 'show']);
+    Route::post('/user', [UserController::class, 'store']);
+    Route::put('/user/{id}', [UserController::class, 'update']);
+    Route::delete('/user/{id}', [UserController::class, 'destroy']);
+});
+
 
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/transaction', [TransactionController::class, 'index']);
@@ -56,35 +62,53 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::delete('/transaction/{id}', [TransactionController::class, 'destroy']);
 });
 
-Route::get('/pos-transaction', [PosTransactionController::class, 'index']);
-Route::get('/pos-transaction/{id}', [PosTransactionController::class, 'show']);
-Route::post('/pos-transaction', [PosTransactionController::class, 'store']);
-Route::put('/pos-transaction/{id}', [PosTransactionController::class, 'update']);
-Route::delete('/pos-transaction/{id}', [PosTransactionController::class, 'destroy']);
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::get('/pos-transaction', [PosTransactionController::class, 'index']);
+    Route::get('/pos-transaction/{id}', [PosTransactionController::class, 'show']);
+    Route::post('/pos-transaction', [PosTransactionController::class, 'store']);
+    Route::put('/pos-transaction/{id}', [PosTransactionController::class, 'update']);
+    Route::delete('/pos-transaction/{id}', [PosTransactionController::class, 'destroy']);
+});
 
-Route::get('/master-budget', [MasterBudgetController::class, 'index']);
-Route::get('/master-budget/{id}', [MasterBudgetController::class, 'show']);
-Route::post('/master-budget', [MasterBudgetController::class, 'store']);
-Route::put('/master-budget/{id}', [MasterBudgetController::class, 'update']);
-Route::delete('/master-budget/{id}', [MasterBudgetController::class, 'destroy']);
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::get('/master-budget', [MasterBudgetController::class, 'index']);
+    Route::get('/master-budget/{id}', [MasterBudgetController::class, 'show']);
+    Route::post('/master-budget', [MasterBudgetController::class, 'store']);
+    Route::put('/master-budget/{id}', [MasterBudgetController::class, 'update']);
+    Route::delete('/master-budget/{id}', [MasterBudgetController::class, 'destroy']);
+});
 
-Route::get('/budget', [BudgetController::class, 'index']);
-Route::get('/budget/{id}', [BudgetController::class, 'show']);
-Route::post('/budget', [BudgetController::class, 'store']);
-Route::put('/budget/{id}', [BudgetController::class, 'update']);
-Route::delete('/budget/{id}', [BudgetController::class, 'destroy']);
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::get('/budget', [BudgetController::class, 'index']);
+    Route::get('/budget/{id}', [BudgetController::class, 'show']);
+    Route::post('/budget', [BudgetController::class, 'store']);
+    Route::put('/budget/{id}', [BudgetController::class, 'update']);
+    Route::delete('/budget/{id}', [BudgetController::class, 'destroy']);
+});
 
-Route::get('/budget-detail', [BudgetDetailController::class, 'index']);
-Route::get('/budget-detail/{id}', [BudgetDetailController::class, 'show']);
-Route::post('/budget-detail', [BudgetDetailController::class, 'store']);
-Route::put('/budget-detail/{id}', [BudgetDetailController::class, 'update']);
-Route::delete('/budget-detail/{id}', [BudgetDetailController::class, 'destroy']);
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::get('/budget-detail', [BudgetDetailController::class, 'index']);
+    Route::get('/budget-detail/{id}', [BudgetDetailController::class, 'show']);
+    Route::post('/budget-detail', [BudgetDetailController::class, 'store']);
+    Route::put('/budget-detail/{id}', [BudgetDetailController::class, 'update']);
+    Route::delete('/budget-detail/{id}', [BudgetDetailController::class, 'destroy']);
+});
 
-Route::get('/dashboard-summary', [DashboardAdminController::class, 'summary']);
-Route::get('/dashboard-trendchart', [DashboardAdminController::class, 'trendChart']);
-Route::get('/dashboard-trendchart-yearly', [DashboardAdminController::class, 'trendChartYearly']);
-Route::get('/dashboard-transactions', [DashboardAdminController::class, 'recentTransactions']);
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::get('/dashboard-summary', [DashboardAdminController::class, 'summary']);
+    Route::get('/dashboard-trendchart', [DashboardAdminController::class, 'trendChart']);
+    Route::get('/dashboard-trendchart-yearly', [DashboardAdminController::class, 'trendChartYearly']);
+    Route::get('/dashboard-transactions', [DashboardAdminController::class, 'recentTransactions']);
+});
 
-Route::get('/superadmin/dashboard-summary', [DashboardSuperAdminController::class, 'summary']);
-Route::get('/superadmin/dashboard-trendline', [DashboardSuperAdminController::class, 'trendLine']);
-Route::get('/superadmin/dashboard-trendbar', [DashboardSuperAdminController::class, 'trendBar']);
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::get('/superadmin/dashboard-summary', [DashboardSuperAdminController::class, 'summary']);
+    Route::get('/superadmin/dashboard-trendline', [DashboardSuperAdminController::class, 'trendLine']);
+    Route::get('/superadmin/dashboard-trendbar', [DashboardSuperAdminController::class, 'trendBar']);
+});
+
+
+
+
+
+
