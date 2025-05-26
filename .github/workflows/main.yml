@@ -1,4 +1,4 @@
-name: Auto Merge to deploy and Deploy
+name: Auto Merge to production and Deploy
 
 on:
   push:
@@ -23,15 +23,15 @@ jobs:
       - name: Fetch all branches
         run: git fetch origin +refs/heads/*:refs/remotes/origin/*
 
-      - name: Checkout deploy branch
-        run: git checkout deploy
+      - name: Checkout production branch
+        run: git checkout production
 
-      - name: Merge main into deploy
+      - name: Merge main into production
         run: |
           git merge origin/main --no-edit || echo "Already up to date"
 
-      - name: Push to deploy
-        run: git push origin deploy
+      - name: Push to production
+        run: git push origin production
 
       - name: Trigger deploy webhook on VM
         run: |
