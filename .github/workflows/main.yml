@@ -1,4 +1,4 @@
-name: Auto Merge main to production and Deploy
+name: Auto Merge to deploy and Deploy
 
 on:
   push:
@@ -6,32 +6,32 @@ on:
       - main
 
 jobs:
-  merge-and-deploy:
+  auto-merge-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout main
         uses: actions/checkout@v3
         with:
-          fetch-depth: 0  # Supaya bisa fetch semua branch
+          fetch-depth: 0
 
       - name: Setup Git config
         run: |
           git config --global user.name "github-actions"
-          git config --global user.email "github-actions@fintrack"
+          git config --global user.email "github-actions@example.com"
 
       - name: Fetch all branches
-        run: git fetch origin +refs/heads/:refs/remotes/origin/
+        run: git fetch origin +refs/heads/*:refs/remotes/origin/*
 
-      - name: Checkout production
-        run: git checkout production
+      - name: Checkout deploy branch
+        run: git checkout deploy
 
-      - name: Merge main into production
+      - name: Merge main into deploy
         run: |
           git merge origin/main --no-edit || echo "Already up to date"
 
-      - name: Push to production
-        run: git push origin production
+      - name: Push to deploy
+        run: git push origin deploy
 
       - name: Trigger deploy webhook on VM
         run: |
