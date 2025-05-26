@@ -1,0 +1,38 @@
+name: Auto Merge to production and Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  auto-merge-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Setup Git config
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@example.com"
+
+      - name: Fetch all branches
+        run: git fetch origin +refs/heads/*:refs/remotes/origin/*
+
+      - name: Checkout production branch
+        run: git checkout production
+
+      - name: Merge main into production
+        run: |
+          git merge origin/main --no-edit || echo "Already up to date"
+
+      - name: Push to production
+        run: git push origin production
+
+      - name: Trigger deploy webhook on VM
+        run: |
+          curl -X POST http://20.189.122.35:9100/hooks/deploy-backend
