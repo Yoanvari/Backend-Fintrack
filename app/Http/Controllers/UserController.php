@@ -4,14 +4,24 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Http\Resources\UserResource;
+use App\Http\Resources\UserCollection;
 
 class UserController extends Controller
 {
     public function index()
     {
-        // Menampilkan semua user dengan relasi cabang
-        $users = User::with('branch')->get();
-        return response()->json($users, 200);
+        $users = User::with('branch')
+                    ->orderBy('updated_at', 'desc')
+                    ->get();
+
+        $total = $users->count();
+        return (new UserCollection($users))
+            ->additional([
+                'meta' => [
+                    'total' => $total,
+                ],
+            ]);
     }
 
     public function store(Request $request)
@@ -27,7 +37,7 @@ class UserController extends Controller
         $validated['password'] = bcrypt($validated['password']);
         $user = User::create($validated);
 
-        return response()->json($user, 201);
+        return new UserResource($user);
     }
 
     public function show($id)
@@ -38,34 +48,33 @@ class UserController extends Controller
             return response()->json(['message' => 'User not found'], 404);
         }
 
-        return response()->json($user, 200);
+        return new UserResource($user);
     }
 
     public function update(Request $request, $id)
     {
-        // Cari user berdasarkan ID
-        $user = User::findOrFail($id);
+        $user = User::find($id);
+        if (!$user) {
+            return response()->json(['message' => 'User not found'], 404);
+        }
 
-        // Validasi data
         $validated = $request->validate([
             'branch_id' => 'required|exists:branches,id',
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|unique:users,email,' . $id,
-            'password' => 'nullable|string|min:6',
+            'password' => 'sometimes|string|min:6',
             'role' => 'required|in:super_admin,admin,staff',
         ]);
 
-        // Jika ada password, hash. Kalau tidak, hapus dari array validasi.
         if ($request->filled('password')) {
             $validated['password'] = bcrypt($validated['password']);
         } else {
             unset($validated['password']);
         }
 
-        // Update user
         $user->update($validated);
 
-        return response()->json($user, 200);
+        return new UserResource($user);
     }
 
 
@@ -84,11 +93,17 @@ class UserController extends Controller
 
     public function getAdmins()
     {
-        $admins = User::where('role', 'admin')->with('branch')->get();
+        $admins = User::where('role', 'admin')
+                    ->with('branch')
+                    ->orderBy('updated_at', 'desc')
+                    ->get();
 
-        return response()->json([
-            'status' => 'success',
-            'data' => $admins,
-        ], 200);
+        $total = $admins->count();
+        return (new UserCollection($admins))
+            ->additional([
+                'meta' => [
+                    'total' => $total,
+                ],
+            ]);
     }
 }
