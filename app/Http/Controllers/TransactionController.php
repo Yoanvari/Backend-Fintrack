@@ -66,7 +66,11 @@ class TransactionController extends Controller
     }
 
     public function show($id) {
-        $transaction = Transaction::with(['user', 'branch', 'category'])->findOrFail($id);
+        $transaction = Transaction::with(['user', 'branch', 'category'])->find($id);
+        if (!$transaction) {
+            return response()->json(['message' => 'Transaction not found'], 404);
+        }
+
         return new TransactionResource($transaction);
     }
 
