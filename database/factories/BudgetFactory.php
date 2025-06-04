@@ -17,16 +17,15 @@ class BudgetFactory extends Factory
      * @return array<string, mixed>
      */
     // database/factories/BudgetFactory.php
-public function definition(): array
-{
-    return [
-        'master_budget_id' => MasterBudget::factory(),
-        'user_id' => User::factory(),
-        'category_id' => Category::factory(),
-        'name' => $this->faker->word,
-        'amount' => $this->faker->randomFloat(2, 100, 1000),
-        'description' => $this->faker->sentence,
-    ];
-}
-
+    public function definition(): array
+    {
+        return [
+            'master_budget_id' => MasterBudget::factory(),
+            'user_id' => User::factory(),
+            'category_id' => Category::factory(),
+            'name' => $this->faker->word,
+            'amount' => $this->faker->randomFloat(2, 100, 1000),
+            'description' => $this->faker->sentence,
+        ];
+    }
 }

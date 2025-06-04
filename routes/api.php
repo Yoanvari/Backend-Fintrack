@@ -101,11 +101,11 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/dashboard-transactions/{id}', [DashboardAdminController::class, 'recentTransactions']);
 });
 
-// Route::middleware(['auth:sanctum'])->group(function () {
-// });
-Route::get('/superadmin/dashboard-summary', [DashboardSuperAdminController::class, 'summary']);
-Route::get('/superadmin/dashboard-trendline', [DashboardSuperAdminController::class, 'trendLine']);
-Route::get('/superadmin/dashboard-trendbar', [DashboardSuperAdminController::class, 'trendBar']);
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::get('/superadmin/dashboard-summary', [DashboardSuperAdminController::class, 'summary']);
+    Route::get('/superadmin/dashboard-trendline', [DashboardSuperAdminController::class, 'trendLine']);
+    Route::get('/superadmin/dashboard-trendbar', [DashboardSuperAdminController::class, 'trendBar']);
+});
 
 
 

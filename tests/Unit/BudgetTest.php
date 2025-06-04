@@ -54,18 +54,3 @@ class BudgetTest extends TestCase
         $this->assertInstanceOf(MasterBudget::class, $budget->masterBudget()->getModel());
     }
 }
-
-//Runtime:       PHP 8.4.7
-//Configuration: D:\Fintrack\Backend-Fintrack\phpunit.xml
-
-//....                                                                4 / 4 (100%)
-
-//Time: 00:00.588, Memory: 40.00 MB
-
-//OK, but there were issues!
-//Tests: 4, Assertions: 4, PHPUnit Deprecations: 9.
-
-// 1.  atribut yang bisa diisi massal (mass assignable) di model Budget sudah benar dan lengkap sesuai daftar: ['master_budget_id', 'user_id', 'category_id', 'name', 'amount', 'description'].
-// 2. hubungan Budget "belongs to" User berhasil dipanggil dan terhubung.
-// 3. Hubungan budget->category() mengembalikan model Category
-// 4. budget->masterBudget() mengembalikan model MasterBudget sesuai ekspektasi.

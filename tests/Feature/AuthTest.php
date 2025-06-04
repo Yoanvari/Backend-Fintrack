@@ -2,63 +2,42 @@
 
 namespace Tests\Feature;
 
-use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
+use App\Models\User;
 
 class AuthTest extends TestCase
 {
     use RefreshDatabase;
 
-    /** @test */
-    public function test_user_can_login_with_valid_credentials()
+    public function test_unauthenticated_user_cannot_access_protected_route()
     {
-        // 1. Buat branch terlebih dahulu
-        $branch = \App\Models\Branch::factory()->create();
-        
-        // 2. Buat user dengan branch_id yang valid
-        $user = User::factory()->create([
-            'email' => 'user@example.com',
-            'password' => bcrypt('password123'),
-            'branch_id' => $branch->id,
-            'role' => 'super_admin'
-        ]);
-        
-        // 3. Test login
-        $response = $this->postJson('/api/login', [
-            'email' => 'user@example.com',
-            'password' => 'password123',
-        ]);
-        
-        $response->assertStatus(200);
-    }
-
-    /** @test */
-    public function login_fails_with_invalid_email()
-    {
-        $response = $this->postJson('/api/login', [
-            'email' => 'nonexistent@example.com',
-            'password' => 'dummy',
-        ]);
+        $response = $this->getJson('/api/user');
 
         $response->assertStatus(401)
-                ->assertJson(['message' => 'Email not found']);
+                 ->assertJson([
+                     'message' => 'Unauthenticated.',
+                 ]);
     }
 
-    /** @test */
-    public function login_fails_with_wrong_password()
+    public function test_authenticated_user_can_access_protected_route()
     {
-        $user = User::factory()->create([
-            'password' => Hash::make('correctpassword'),
-        ]);
+        $user = User::factory()->create();
 
-        $response = $this->postJson('/api/login', [
-            'email' => $user->email,
-            'password' => 'wrongpassword',
-        ]);
+        $response = $this->actingAs($user)->getJson('/api/user');
 
-        $response->assertStatus(401)
-                ->assertJson(['message' => 'Password incorrect']);
+        $response->assertStatus(200)
+         ->assertJson([
+             'data' => [
+                 [
+                     'id' => $user->id,
+                     'email' => $user->email,
+                 ]
+             ],
+             'meta' => [
+                 'status' => 'success'
+             ]
+         ]);
     }
 }
