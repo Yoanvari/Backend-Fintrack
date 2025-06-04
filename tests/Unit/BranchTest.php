@@ -36,9 +36,3 @@ class BranchTest extends TestCase
         ], $branch->getFillable());
     }
 }
-
-// * Ringkasan Eksekusi PHPUnit:
-// * 
-// * PHPUnit berhasil dijalankan dan semua tes lulus:
-// * - Jumlah tes: 2
-// * - Jumlah assertion: 2

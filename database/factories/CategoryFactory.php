@@ -13,7 +13,7 @@ class CategoryFactory extends Factory
     {
         return [
             'category_name' => $this->faker->word,
-            'category_type' => $this->faker->randomElement(['income', 'expense']),
+            'category_type' => $this->faker->randomElement(['pemasukan', 'pengeluaran']),
         ];
     }
 }
