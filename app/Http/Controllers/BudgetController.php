@@ -4,26 +4,54 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Budget;
+use App\Models\BudgetDetail;
+use App\Http\Resources\BudgetResource;
+use App\Http\Resources\BudgetCollection;
 
 class BudgetController extends Controller
 {
     public function index() {
-        return response()->json(Budget::all(),200);
+        $budgets = Budget::with(['branch', 'user'])
+                        ->orderBy('updated_at', 'desc')
+                        ->get();
+
+        $total = $budgets->count();
+        return (new BudgetCollection($budgets))
+            ->additional([
+                'meta' => [
+                    'total' => $total
+                ],
+            ]);
+    }
+
+    public function showByBranch($branchId) {
+        $budget = Budget::with(['branch', 'user'])
+                        ->where('branch_id', $branchId)
+                        ->orderBy('updated_at', 'desc')
+                        ->get();
+
+        $total = $budget->count();
+        return (new BudgetCollection($budget))
+            ->additional([
+                'meta' => [
+                    'total' => $total
+                ],
+            ]);
     }
 
     public function store(Request $request) {
         $validated = $request->validate([
-            'master_budget_id' => 'required|exists:master_budgets,id',
+            'branch_id' => 'required|exists:branches,id',
             'user_id' => 'required|exists:users,id',
-            'category_id' => 'required|exists:categories,id',
-            'name' => 'required|string|max:255',
-            'amount' => 'required|numeric|min:0',
-            'description' => 'nullable|string',
+            'period' => 'required|date',
+            'submission_date' => 'required|date',
+            'status' => 'required|string|max:24',
+            'revision_note' => 'nullable|string',
         ]);
 
         $budget = Budget::create($validated);
 
-        return response()->json($budget, 201);
+        return new BudgetResource($budget);
     }
 
     public function show($id) {
@@ -33,22 +61,22 @@ class BudgetController extends Controller
             return response()->json(['message' => 'Budget not found'], 404);
         }
 
-        return response()->json($budget, 200);
+        return new BudgetResource($budget);
     }
 
     public function update(Request $request, Budget $budget) {
         $validated = $request->validate([
-            'master_budget_id' => 'required|exists:master_budgets,id',
-            'user_id' => 'required|exists:users,id',
-            'category_id' => 'required|exists:categories,id',
-            'name' => 'required|string|max:255',
-            'amount' => 'required|numeric|min:0',
-            'description' => 'nullable|string',
+            'branch_id' => 'sometimes|exists:branches,id',
+            'user_id' => 'sometimes|exists:users,id',
+            'period' => 'required|date',
+            'submission_date' => 'required|date',
+            'status' => 'required|string|max:24',
+            'revision_note' => 'nullable|string',
         ]);
 
         $budget->update($validated);
 
-        return response()->json($budget, 200);
+        return new BudgetResource($budget);
     }
 
     public function destroy($id) {
@@ -60,6 +88,8 @@ class BudgetController extends Controller
 
         $budget->delete();
 
-        return response()->json(null, 204);
+        return response()->json([
+            'message' => 'Budget dan semua detailnya berhasil dihapus.'
+        ]);
     }
 }

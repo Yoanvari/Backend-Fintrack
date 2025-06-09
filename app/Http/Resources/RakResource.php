@@ -4,8 +4,9 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Http\Resources\BudgetDetailResource;
 
-class BudgetResource extends JsonResource
+class RakResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -20,6 +21,7 @@ class BudgetResource extends JsonResource
             'submission_date' => $this->submission_date->format('Y-m-d H:i:s'),
             'status' => $this->status,
             'revision_note' => $this->revision_note,
+            'total_amount' => $this->detail_sum_amount,
             'user' => [
                 'id' => $this->user->id,
                 'name' => $this->user->name,
@@ -28,6 +30,7 @@ class BudgetResource extends JsonResource
                 'id' => $this->branch->id,
                 'name' => $this->branch->branch_name,
             ],
+            'detail' => BudgetDetailResource::collection($this->whenLoaded('detail')),
             'updated_at' => $this->updated_at?->format('Y-m-d H:i:s'),
         ];
     }
