@@ -13,6 +13,7 @@ use App\Http\Controllers\BudgetDetailController;
 use App\Http\Controllers\DashboardAdminController;
 use App\Http\Controllers\DashboardSuperAdminController;
 use App\Http\Controllers\RakController;
+use App\Http\Controllers\RekaptulasiController;
 use Illuminate\Http\Request;
 
 Route::middleware('auth:sanctum')->post('/tokens/create', function (Request $request) {
@@ -112,8 +113,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/superadmin/dashboard-trendbar', [DashboardSuperAdminController::class, 'trendBar']);
 });
 
-
-
-
-
-
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::get('/rekaptulasi', [RekaptulasiController::class, 'index']);
+    Route::get('/rekaptulasi/{branch_id}', [RekaptulasiController::class, 'showByBranch']);
+});
