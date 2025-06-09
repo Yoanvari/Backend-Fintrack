@@ -14,6 +14,21 @@ class BudgetResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->id,
+            'period' => $this->period->format('Y-m-d'),
+            'submission_date' => $this->submission_date->format('Y-m-d H:i:s'),
+            'status' => $this->status,
+            'revision_note' => $this->revision_note,
+            'user' => [
+                'id' => $this->user->id,
+                'name' => $this->user->name,
+            ],
+            'branch' => [
+                'id' => $this->branch->id,
+                'name' => $this->branch->branch_name,
+            ],
+            'updated_at' => $this->updated_at?->format('Y-m-d H:i:s'),
+        ];
     }
 }
