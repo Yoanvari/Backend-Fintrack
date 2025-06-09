@@ -4,31 +4,43 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\BudgetDetail;
 
 class Budget extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'master_budget_id',
+        'branch_id',
         'user_id',
-        'category_id',
-        'name',
-        'amount',
-        'description',
+        'period',
+        'submission_date',
+        'status',
+        'revision_note',
     ];
 
     protected $primaryKey = 'id';
 
-    public function masterBudget() {
-        return $this->belongsTo(MasterBudget::class);
+    protected $casts = [
+        'submission_date' => 'datetime',
+        'period' => 'date',
+    ];
+
+    protected static function booted() {
+        static::deleting(function ($budget) {
+            $budget->detail()->delete();
+        });
     }
 
     public function user() {
         return $this->belongsTo(User::class);
     }
 
-    public function category() {
-        return $this->belongsTo(Category::class);
+    public function branch() {
+        return $this->belongsTo(branch::class);
+    }
+
+    public function detail() {
+        return $this->hasMany(Budgetdetail::class);
     }
 }

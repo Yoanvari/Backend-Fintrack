@@ -11,17 +11,19 @@ class BudgetDetail extends Model
 
     protected $fillable = [
         'budget_id',
-        'transaction_id',
-        'amount',
+        'category_id',
+        'budget_id',
+        'description',
+        'amount'
     ];
 
     protected $primaryKey = 'id';
 
     public function budget() {
-        return $this->belongsTo(budget::class);
+        return $this->belongsTo(Budget::class);
     }
 
-    public function transaction() {
-        return $this->belongsTo(transaction::class);
+    public function category() {
+        return $this->belongsTo(category::class);
     }
 }
