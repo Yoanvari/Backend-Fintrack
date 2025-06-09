@@ -17,7 +17,6 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             TransactionSeeder::class,
             PosTransactionSeeder::class,
-            MasterBudgetSeeder::class,
             BudgetSeeder::class,
             BudgetDetailSeeder::class,
         ]);

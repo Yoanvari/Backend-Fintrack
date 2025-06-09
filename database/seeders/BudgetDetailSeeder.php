@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use App\Models\BudgetDetail;
 use App\Models\Budget;
-use App\Models\Transaction;
+use App\Models\Category;
 use Faker\Factory as Faker;
 
 class BudgetDetailSeeder extends Seeder
@@ -16,24 +16,19 @@ class BudgetDetailSeeder extends Seeder
     public function run(): void
     {
         $faker = Faker::create('id_ID');
-
         $budgets = Budget::all();
+        $categories = Category::where('category_type', 'pengeluaran')->get();
 
         foreach ($budgets as $budget) {
-            $transactions = Transaction::where('category_id', $budget->category_id)
-                ->where('branch_id', $budget->masterBudget->branch_id)
-                ->get();
+            $usedCategories = $categories->random(min(4, $categories->count()));
 
-            if ($transactions->isNotEmpty()) {
-                $selectedTransactions = $transactions->random(min(5, $transactions->count()));
-                
-                foreach ($selectedTransactions as $transaction) {
-                    BudgetDetail::create([
-                        'budget_id' => $budget->id,
-                        'transaction_id' => $transaction->id,
-                        'amount' => $transaction->amount,
-                    ]);
-                }
+            foreach ($usedCategories as $category) {
+                BudgetDetail::create([
+                    'budget_id' => $budget->id,
+                    'category_id' => $category->id,
+                    'description' => $faker->sentence(),
+                    'amount' => $faker->randomFloat(2, 100000, 10000000),
+                ]);
             }
         }
     }
