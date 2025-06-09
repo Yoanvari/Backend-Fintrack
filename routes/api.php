@@ -12,6 +12,7 @@ use App\Http\Controllers\BudgetController;
 use App\Http\Controllers\BudgetDetailController;
 use App\Http\Controllers\DashboardAdminController;
 use App\Http\Controllers\DashboardSuperAdminController;
+use App\Http\Controllers\RakController;
 use Illuminate\Http\Request;
 
 Route::middleware('auth:sanctum')->post('/tokens/create', function (Request $request) {
@@ -71,19 +72,12 @@ Route::middleware(['auth:sanctum'])->group(function () {
 });
 
 Route::middleware(['auth:sanctum'])->group(function () {
-    Route::get('/master-budget', [MasterBudgetController::class, 'index']);
-    Route::get('/master-budget/{id}', [MasterBudgetController::class, 'show']);
-    Route::post('/master-budget', [MasterBudgetController::class, 'store']);
-    Route::put('/master-budget/{id}', [MasterBudgetController::class, 'update']);
-    Route::delete('/master-budget/{id}', [MasterBudgetController::class, 'destroy']);
-});
-
-Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/budget', [BudgetController::class, 'index']);
     Route::get('/budget/{id}', [BudgetController::class, 'show']);
     Route::post('/budget', [BudgetController::class, 'store']);
     Route::put('/budget/{id}', [BudgetController::class, 'update']);
     Route::delete('/budget/{id}', [BudgetController::class, 'destroy']);
+    Route::get('/budget-branch/{id}', [BudgetController::class, 'showByBranch']);
 });
 
 Route::middleware(['auth:sanctum'])->group(function () {
@@ -92,6 +86,17 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/budget-detail', [BudgetDetailController::class, 'store']);
     Route::put('/budget-detail/{id}', [BudgetDetailController::class, 'update']);
     Route::delete('/budget-detail/{id}', [BudgetDetailController::class, 'destroy']);
+    Route::get('/budget-detail/budget/{id}', [BudgetDetailController::class, 'showByBudget']);
+});
+
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::get('/rak-branch/{id}', [RakController::class, 'showRakDetailByBranch']);
+    Route::get('/rak/{id}', [RakController::class, 'showRakById']);
+    Route::get('/rak-summary/{id}', [RakController::class, 'showRakSummaryByBranch']);
+    Route::get('/rak', [RakController::class, 'showRakAll']);
+    Route::patch('/rak-status/{id}', [RakController::class, 'updateStatus']);
+    Route::patch('/rak/{id}', [RakController::class, 'updateRak']);
+    Route::delete('/rak/{id}', [RakController::class, 'deleteRakByBranch']);
 });
 
 Route::middleware(['auth:sanctum'])->group(function () {
