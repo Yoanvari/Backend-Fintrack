@@ -117,3 +117,5 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/rekaptulasi', [RekaptulasiController::class, 'index']);
     Route::get('/rekaptulasi/{branch_id}', [RekaptulasiController::class, 'showByBranch']);
 });
+
+Route::get('/rekaptulasi/export/excel/{branchId}', [RekaptulasiController::class, 'exportExcelByBranch']);
