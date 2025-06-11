@@ -19,6 +19,8 @@ Service yang digunakan:
 2. Azure Virtual Network
 3. Azure Network Security Group
 
+![Service Azure](public/img/serviceazure.png)
+
 ==========================
 
 ## Perencanaan Proyek
@@ -51,6 +53,17 @@ Proyek ini bertujuan untuk membuat sistem informasi keuangan sport center untuk 
 * Virtual Network / Subnet: fintrack-vnet/app-subnet
 * #### Layanan yang digunakan
 * Docker dan Docker Compose
+
+![Docker File](public/img/dockerfile1.png)
+
+![Docker Compose](public/img/dockercompose1.png)
+* Portainer
+
+![Portainer](public/img/portainer1.png)
+* Github Action
+
+![Github Action](public/img/githuhaction1.png)
+
 2. Virtual Machine Backend
 * #### Spesifikasi
 * Nama: backend-vm
@@ -60,7 +73,23 @@ Proyek ini bertujuan untuk membuat sistem informasi keuangan sport center untuk 
 * Virtual Network / Subnet: fintrack-vnet/app-subnet
 * #### Layanan yang digunakan
 * Docker dan Docker Compose
+
+![Dockerfile](public/img/dockerfile2.png)
+
+![Docker Compose](public/img/dockercompose2.png)
+
+* Portainer
+
+![Portainer](public/img/portainer2.png)
+
 * Webhook
+
+![Webhook](public/img/webhook.png)
+
+* Github Action
+
+![Github Action](public/img/githubaction2.png)
+
 3. Virtual Machine Database
 * #### Spesifikasi
 * Nama: database-vm
@@ -71,4 +100,37 @@ Proyek ini bertujuan untuk membuat sistem informasi keuangan sport center untuk 
 * #### Layanan yang digunakan
 * Docker dan Docker Compose
 
-### 
+![Docker Compose](public/img/dockercompose3.png)
+
+* Portainer
+
+![Portainer](public/img/portainer3.png)
+
+### Network Security Group
+
+#### Port yang di Expose
+##### VM Frontend
+* 80 (HTTP)
+* 22 (SSH)
+* 443 (HTTPS)
+* 3001(Docker)
+* 9001(Portainer)
+
+![Port Expose](public/img/portexpose1.png)
+
+##### VM Backend
+* 80 (HTTP)
+* 22 (SSH)
+* 443 (HTTPS)
+* 9100(Webhook)
+* 9000(Portainer)
+
+![Port Expose](public/img/portexpose2.png)
+
+##### VM Database
+* 80 (HTTP)
+* 22 (SSH)
+* 443 (HTTPS)
+* 9001(Portainer)
+
+![Port Expose](public/img/portexpose3.png)
