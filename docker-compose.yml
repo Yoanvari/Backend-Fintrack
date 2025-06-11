@@ -1,0 +1,30 @@
+version: '3.8'
+services:
+  app:
+    build:
+      context: .
+    image: laravel-app
+    container_name: laravel-app
+    working_dir: /var/www
+    volumes:
+      - .:/var/www
+    depends_on:
+      - webserver
+    networks:
+      - fintrack-net
+
+  webserver:
+    image: nginx:alpine
+    container_name: nginx
+    ports:
+      - "80:80"
+    volumes:
+      - .:/var/www
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+    networks:
+      - fintrack-net
+
+networks:
+  fintrack-net:
+    external: true
+
