@@ -23,14 +23,12 @@ class CategorySeeder extends Seeder
             ['category_name' => 'Penjualan Merchandise', 'category_type' => 'pemasukan'],
     
             // Pengeluaran
-            ['category_name' => 'Gaji Staff', 'category_type' => 'pengeluaran'],
-            ['category_name' => 'Gaji Instruktur', 'category_type' => 'pengeluaran'],
-            ['category_name' => 'Pemeliharaan Peralatan', 'category_type' => 'pengeluaran'],
-            ['category_name' => 'Listrik dan Air', 'category_type' => 'pengeluaran'],
+            ['category_name' => 'Gaji', 'category_type' => 'pengeluaran'],
+            ['category_name' => 'Operasional', 'category_type' => 'pengeluaran'],
+            ['category_name' => 'Pemeliharaan', 'category_type' => 'pengeluaran'],
             ['category_name' => 'Promosi', 'category_type' => 'pengeluaran'],
-            ['category_name' => 'Alat Tulis Kantor', 'category_type' => 'pengeluaran'],
-            ['category_name' => 'Konsumsi Acara', 'category_type' => 'pengeluaran'],
-            ['category_name' => 'Transportasi Staff', 'category_type' => 'pengeluaran']
+            ['category_name' => 'Konsumsi dan Acara', 'category_type' => 'pengeluaran'],
+            ['category_name' => 'Transportasi', 'category_type' => 'pengeluaran']
         ];
     
         Category::insert($categories);

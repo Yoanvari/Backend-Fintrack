@@ -6,3 +6,9 @@ use Illuminate\Support\Facades\Artisan;
 Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote');
+
+Artisan::command('lock:transactions', function () {
+    $this->call('App\Console\Commands\LockPreviousMonthTransactions');
+});
+
+Schedule::command('lock:transactions')->monthlyOn(1, '00:00');

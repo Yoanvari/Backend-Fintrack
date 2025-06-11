@@ -18,7 +18,7 @@ class DatabaseSeeder extends Seeder
             TransactionSeeder::class,
             PosTransactionSeeder::class,
             BudgetSeeder::class,
-            BudgetDetailSeeder::class,
+            // BudgetDetailSeeder::class,
         ]);
     }
 }
