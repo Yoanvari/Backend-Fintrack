@@ -121,5 +121,21 @@ class TransactionController extends Controller
       
         return response()->json(['message' => 'Transaksi berhasil dikunci', 'data' => $transaction]);
     }
-      
+    
+    public function showPos() {
+        $transaction = Transaction::with(['user', 'branch', 'category'])
+                        ->where('category_id', 3)
+                        ->orderBy('transaction_date', 'desc')
+                        ->get();
+
+        $total = $transaction->count();
+        $totalAmount = $transaction->sum('amount');
+        return (new TransactionCollection($transaction))
+            ->additional([
+                'meta' => [
+                    'total' => $total,
+                    'total_amount' => $totalAmount,
+                ],
+            ]);
+    }
 }

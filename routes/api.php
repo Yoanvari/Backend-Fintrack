@@ -63,6 +63,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::patch('/transaction/{id}', [TransactionController::class, 'update']);
     Route::patch('/transaction-lock/{id}', [TransactionController::class, 'lock']);
     Route::delete('/transaction/{id}', [TransactionController::class, 'destroy']);
+    Route::get('/transaction-pos', [TransactionController::class, 'showPos']);
 });
 
 Route::post('/pos/transaction', [TransactionController::class, 'store']);
