@@ -64,6 +64,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::delete('/transaction/{id}', [TransactionController::class, 'destroy']);
 });
 
+Route::post('/pos/transaction', [TransactionController::class, 'store']);
+
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/pos-transaction', [PosTransactionController::class, 'index']);
     Route::get('/pos-transaction/{id}', [PosTransactionController::class, 'show']);
