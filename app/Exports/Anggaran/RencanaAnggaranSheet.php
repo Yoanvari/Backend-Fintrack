@@ -19,6 +19,7 @@ class RencanaAnggaranSheet implements FromCollection, WithHeadings, WithMapping,
         $this->budgets = \App\Models\Budget::with(['user', 'detail.category'])
             ->where('branch_id', $branchId)
             ->where('status', 'disetujui')
+            ->whereDate('period', '<', now()->startOfMonth())
             ->orderBy('period', 'desc')
             ->get();
     }

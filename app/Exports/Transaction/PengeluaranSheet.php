@@ -22,6 +22,7 @@ class PengeluaranSheet implements FromCollection, WithHeadings, WithMapping, Wit
             ->join('categories', 'transactions.category_id', '=', 'categories.id')
             ->where('transactions.branch_id', $this->branchId)
             ->where('categories.category_type', 'pengeluaran')
+            ->where('transactions.is_locked', true)
             ->orderBy('transactions.transaction_date', 'asc')
             ->get();
 

@@ -22,6 +22,7 @@ class PemasukanSheet implements FromCollection, WithHeadings, WithMapping, WithS
             ->join('categories', 'transactions.category_id', '=', 'categories.id')
             ->where('transactions.branch_id', $this->branchId)
             ->where('categories.category_type', 'pemasukan')
+            ->where('transactions.is_locked', true)
             ->orderBy('transactions.transaction_date', 'asc')
             ->get();
 
