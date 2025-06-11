@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Transaction;
+use App\Exports\RekaptulasiExport;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\BudgetDetail;
+use Maatwebsite\Excel\Facades\Excel;
 
 class RekaptulasiController extends Controller
 {
@@ -104,5 +106,31 @@ class RekaptulasiController extends Controller
         return response()->json([
             'data' => $rekap
         ]);
+    }
+
+    /**
+     * Export transactions to Excel by branch ID from URL parameter
+     */
+    public function exportExcelByBranch($branchId)
+    {
+        // Validasi branch exists
+        $branch = \App\Models\Branch::find($branchId);
+        if (!$branch) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Branch tidak ditemukan'
+            ], 404);
+        }
+
+        try {
+            $fileName = 'Rekapitulasi_' . str_replace(' ', '_', $branch->branch_name) . '_' . date('Y_m_d_H_i_s') . '.xlsx';
+            
+            return Excel::download(new RekaptulasiExport($branchId), $fileName, 'Xlsx');
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal mengexport data: ' . $e->getMessage()
+            ], 500);
+        }
     }
 }
