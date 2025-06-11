@@ -25,11 +25,15 @@ class LockPreviousMonthTransactions extends Command
      */
     public function handle()
     {
-        $lastMonth = now()->subMonth();
+        // $lastMonth = now()->subMonth();
         
+        // \DB::table('transactions')
+        //     ->whereMonth('transaction_date', $lastMonth->month)
+        //     ->whereYear('transaction_date', $lastMonth->year)
+        //     ->update(['is_locked' => 1]);
+
         \DB::table('transactions')
-            ->whereMonth('transaction_date', $lastMonth->month)
-            ->whereYear('transaction_date', $lastMonth->year)
+            ->where('transaction_date', '<', now()->startOfMonth())
             ->update(['is_locked' => 1]);
 
         $this->info('Transaksi bulan sebelumnya berhasil dikunci.');
