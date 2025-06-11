@@ -27,9 +27,7 @@
     </style>
 </head>
 <body>
-
     <h2 style="text-align: center;">Laporan Realisasi vs Anggaran</h2>
-
     <table>
         <thead>
             <tr>
@@ -63,6 +61,5 @@
             </tr>
         </tfoot>
     </table>
-
 </body>
 </html>

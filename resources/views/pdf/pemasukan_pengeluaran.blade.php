@@ -18,7 +18,6 @@
     <div class="spacer"></div>
     <hr>
     <div class="spacer"></div>
-
     {{-- Pemasukan --}}
     <h2>Pemasukan</h2>
     <table>
@@ -44,10 +43,8 @@
             @endforeach
         </tbody>
     </table>
-
     {{-- Page Break --}}
     <div style="page-break-after: always;"></div>
-
     {{-- Pengeluaran --}}
     <h2>Pengeluaran</h2>
     <table>

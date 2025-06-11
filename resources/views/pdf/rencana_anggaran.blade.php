@@ -14,15 +14,12 @@
     </style>
 </head>
 <body>
-
     <h2>Rencana Anggaran</h2>
 @foreach ($budgets as $budget)
     <div class="header">Periode: {{ \Carbon\Carbon::parse($budget->period)->format('F Y') }}</div>
     <div class="header">Diajukan oleh: {{ $budget->user->name }}</div>
     <div class="header">Waktu Pengajuan: {{ \Carbon\Carbon::parse($budget->submission_date)->format('d/m/Y H:i') }}</div>
-
     <br>
-
     <table>
         <thead>
             <tr>
@@ -53,11 +50,9 @@
             </tr>
         </tbody>
     </table>
-
     <div class="spacer"></div>
     <hr>
     <div class="spacer"></div>
 @endforeach
-
 </body>
 </html>
