@@ -14,7 +14,6 @@ use App\Http\Controllers\DashboardAdminController;
 use App\Http\Controllers\DashboardSuperAdminController;
 use App\Http\Controllers\RakController;
 use App\Http\Controllers\RekaptulasiController;
-use \App\Http\Controllers\ExportPdfController;
 use Illuminate\Http\Request;
 
 Route::middleware('auth:sanctum')->post('/tokens/create', function (Request $request) {
@@ -125,4 +124,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
 //excel
 Route::get('/rekapitulasi/export/excel/{branchId}', [RekaptulasiController::class, 'exportExcelByBranch']);
 //pdf
-Route::get('/rekapitulasi/export/pdf/{branchId}', [ExportPdfController::class, 'exportLaporanKeuanganLengkap']);
+Route::get('/rekapitulasi/export/pdf/{branchId}', [RekaptulasiController::class, 'exportLaporanKeuanganLengkap']);
+
+//test
+Route::apiResource('branches', BranchController::class);
+Route::apiResource('categories', CategoryController::class);
+Route::get('users/admins', [UserController::class, 'getAdmins']);
+Route::apiResource('users', UserController::class);
