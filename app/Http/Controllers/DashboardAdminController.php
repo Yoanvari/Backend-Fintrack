@@ -4,11 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Transaction;
+use App\Models\Budget;
 use Carbon\Carbon;
 
 class DashboardAdminController extends Controller
 {
-    //
     public function summary($branchId)
     {
         $currentYear = Carbon::now()->year;
@@ -29,12 +29,22 @@ class DashboardAdminController extends Controller
             })
             ->sum('amount');
 
-        $saldo = $pemasukan - $pengeluaran;
+        $totalAnggaran = Budget::where('branch_id', $branchId)
+            ->whereYear('period', $currentYear)
+            ->where('status', 'disetujui')
+            ->with('detail')
+            ->get()
+            ->sum(function ($budget) {
+                return $budget->detail->sum('amount');
+            });
+
+        $realisasiAnggaran = $totalAnggaran - $pengeluaran;
 
         return response()->json([
             'pemasukan' => $pemasukan,
             'pengeluaran' => $pengeluaran,
-            'saldo' => $saldo,
+            'total_anggaran' => $totalAnggaran,
+            'realisasi_anggaran' => $realisasiAnggaran,
         ]);
     }
     

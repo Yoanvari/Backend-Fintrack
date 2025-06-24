@@ -5,41 +5,67 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Branch;
 use App\Models\Transaction;
+use App\Models\Budget;
+use Carbon\Carbon;
 
 class DashboardSuperAdminController extends Controller
 {
     public function summary()
     {
-        // Ambil semua cabang beserta transaksi dan kategorinya
-        $branches = Branch::with(['transactions.category'])->get();
+        $currentYear = Carbon::now()->year;
 
-        // Hitung total pemasukan, pengeluaran, dan saldo keseluruhan
+        // Ambil semua cabang beserta transaksi dan kategorinya
+        $branches = Branch::with([
+            'transactions.category',
+            'budgets' => function ($query) use ($currentYear) {
+                $query->whereYear('period', $currentYear)
+                      ->where('status', 'disetujui')
+                      ->with('detail');
+            }
+        ])->get();
+
+        // Hitung total keseluruhan
         $totalPemasukan = 0;
         $totalPengeluaran = 0;
+        $totalAnggaran = 0;
 
         // Proses data tiap cabang
-        $branchData = $branches->map(function ($branch) use (&$totalPemasukan, &$totalPengeluaran) {
+        $branchData = $branches->map(function ($branch) use (&$totalPemasukan, &$totalPengeluaran, &$totalAnggaran, $currentYear) {
             $pemasukan = $branch->transactions
+                ->filter(function ($transaction) use ($currentYear) {
+                    return $transaction->created_at->year == $currentYear;
+                })
                 ->where('category.category_type', 'pemasukan')
                 ->sum('amount');
-
+    
             $pengeluaran = $branch->transactions
+                ->filter(function ($transaction) use ($currentYear) {
+                    return $transaction->created_at->year == $currentYear;
+                })
                 ->where('category.category_type', 'pengeluaran')
                 ->sum('amount');
-
-            $saldo = $pemasukan - $pengeluaran;
-
+    
+            // Hitung total anggaran untuk cabang ini
+            $anggaranCabang = $branch->budgets->sum(function ($budget) {
+                return $budget->detail->sum('amount');
+            });
+    
+            // Realisasi anggaran = Total anggaran - Pengeluaran
+            $realisasiAnggaran = $anggaranCabang - $pengeluaran;
+    
             // Akumulasi total
             $totalPemasukan += $pemasukan;
             $totalPengeluaran += $pengeluaran;
-
+            $totalAnggaran += $anggaranCabang;
+    
             return [
                 'branch_code' => $branch->branch_code,
                 'branch_name' => $branch->branch_name,
                 'branch_address' => $branch->branch_address,
                 'pemasukan' => $pemasukan,
                 'pengeluaran' => $pengeluaran,
-                'saldo' => $saldo,
+                'total_anggaran' => $anggaranCabang,
+                'realisasi_anggaran' => $realisasiAnggaran,
             ];
         });
 
@@ -47,12 +73,14 @@ class DashboardSuperAdminController extends Controller
             'summary' => [
                 'total_pemasukan' => $totalPemasukan,
                 'total_pengeluaran' => $totalPengeluaran,
-                'total_saldo' => $totalPemasukan - $totalPengeluaran,
+                'total_anggaran' => $totalAnggaran,
+                'total_realisasi_anggaran' => $totalAnggaran - $totalPengeluaran,
                 'jumlah_cabang' => $branches->count(),
             ],
             'branches' => $branchData,
         ]);
     }
+
     public function trendLine()
     {
         // Ambil total pemasukan per tahun
