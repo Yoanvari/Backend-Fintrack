@@ -2,30 +2,26 @@
 
 namespace Database\Factories;
 
-use App\Models\MasterBudget;
+use App\Models\Budget;
 use App\Models\User;
-use App\Models\Category;
+use App\Models\Branch;
 use Illuminate\Database\Eloquent\Factories\Factory;
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Budget>
  */
 class BudgetFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
-    // database/factories/BudgetFactory.php
+    protected $model = Budget::class;
+
     public function definition(): array
     {
         return [
-            'master_budget_id' => MasterBudget::factory(),
+            'branch_id' => Branch::factory(),
             'user_id' => User::factory(),
-            'category_id' => Category::factory(),
-            'name' => $this->faker->word,
-            'amount' => $this->faker->randomFloat(2, 100, 1000),
-            'description' => $this->faker->sentence,
+            'period' => $this->faker->date(),
+            'submission_date' => $this->faker->dateTimeBetween('-1 month', 'now'),
+            'status' => $this->faker->randomElement(['draf', 'diajukan', 'disetujui', 'ditolak', 'revisi']),
+            'revision_note' => $this->faker->boolean(30) ? $this->faker->sentence() : null,
         ];
     }
 }
